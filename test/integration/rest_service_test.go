@@ -18,12 +18,15 @@ import (
 
 var serviceHost = "http://localhost:8080"
 
+// Configure service host from env variable
 func init() {
 	if h := os.Getenv("SERVICEHOST"); len(h) > 0 {
 		serviceHost = h
 	}
 	log.Println("testing service: ", serviceHost)
 }
+
+// Test ping endpoint
 func TestPingEndpoint(t *testing.T) {
 	rest := resty.New().EnableTrace().SetDebug(false)
 	t.Run("Ping", func(t *testing.T) {
@@ -38,6 +41,10 @@ func Test_BoxesEndpoint(t *testing.T) {
 	// make sure that test data is distinguishable from prod data and unique for test run
 	testBoxId := fmt.Sprintf("test_box_id_%d", time.Now().Unix())
 	testContent := "test box content"
+
+	// it's a good practice to prepare tests data before test run and clean up after test run
+	// however it's not always possible so it's ok to rely on test data that was generated earlier
+	// For example you may have a test user that is used in integration tests to authenticat your requests
 
 	rest := resty.New().EnableTrace().SetDebug(false)
 
