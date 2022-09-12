@@ -1,4 +1,4 @@
-name: validate-commit
+name: build
 on:
   push:
 
@@ -35,14 +35,14 @@ jobs:
         id: vars_step
         uses: ./.github/actions/git-vars
 
-      - name: Login to Amazon ECR
+      - name: Login to Docker registry
         shell: bash
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          echo ${{ DOCKERHUB_TOKEN }} | buildah login \
-            --username ${{ DOCKERHUB_USERNAME }} \
+          echo $DOCKERHUB_TOKEN | buildah login \
+            --username $DOCKERHUB_USERNAME \
             --password-stdin docker.io
             
       - name: OCI build and push
