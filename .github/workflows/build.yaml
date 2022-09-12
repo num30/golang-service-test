@@ -23,9 +23,7 @@ jobs:
 
       - name: Build
         shell: bash
-        env:
-          BUILD_NUMBER: ${{ github.run_number }}
-        run: go build ./...
+        run: make build
 
       - name: Test
         shell: bash
