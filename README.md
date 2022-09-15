@@ -69,9 +69,8 @@ Try this example in Kubernetes by running:
 ```
 helm install int-example  boxes-api 
 helm test int-example
+kubectl logs int-example-boxes-api-test-integration
 ```
-
-
 
 ## Results 
 The test results are reported in a log of a container.  
