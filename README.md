@@ -1,6 +1,16 @@
 # Rest API integration test example
 
-This repository demonstrates one of the approaches to write, run and maintain integration tests for a go service. 
+## Objective
+
+Integration tests are automated tests executed against an instance of running service, usually after deployment, to ensure that the service works properly with other parts of the system. For example, if a service uses DB then we want to test its interface and ensure that the data from DB is returned.  
+
+In [testing pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) they are located between unit-test and end-to-end tests. The main target of those tests is service API so it's fairly easy to write them which makes them a crucial part of software quality assurance
+
+## Scope 
+
+This repository demonstrates one of the approaches to write, run and maintain integration tests for a Golang service. 
+
+## What is in the repository?
 
 In this repo you will find: 
 - simple [Rest API server](/pkg/router/router.go)
@@ -17,13 +27,7 @@ We have our basic api service declared in [router.go](/pkg/router/router.go) fil
 
 We have a [test](/test/integration/rest_service_test.go) that checks that our service works as expected. Test is written as a go tests the only difference is that we don't access any methods directly but use HTTP calls to call our service.  
 
-## Running locally
-Our integration test have a `integration` build tag that prevets our test from running with `go test ./...` command. 
 
-To run our test locally: 
-```
-go test ./test/integration -tags integration  -v -count=1
-```
 
 ## Building Test Image 
 Running locally is good for one time verification. In order to run test as part of CI/CD pipeline we need to build and push integration test image. To do that we will build a test binary first 
@@ -41,8 +45,34 @@ You probably want to do it in a pipeline so [here is an example of Github Action
 We build application image with two tags `[short-commit-sha]` and `[branch-name]-[build-number]` test image is being built with the same tags but with  `-test` suffix. That way we use same Docker repository for both application and test images. You may consider having separate repository although I would suggest to stick to some naming conventions. This will make it easier to deal with running the test later. 
 
 
-## Runnig Tests In K8s
+## Runnig Tests
+
+### Locally
+Our integration test have a `integration` build tag that prevets our test from running with `go test ./...` command. 
+
+To run our test locally: 
+```
+go test ./test/integration -tags integration  -v -count=1
+```
+
+### Docker
+
+Test are packaged into a docker image so we can run them in a container. This docker container is easy to run in a K8s as part of helm test, k8s job, or as a step in a CD pipeline.
+
 
 ### Helm Chart 
 
-If you use helm charts to deploy you application then you can use [helm test](https://helm.sh/docs/topics/chart_tests/) to run your integration tests. 
+If you use helm charts to deploy you application then you can use [helm test](https://helm.sh/docs/topics/chart_tests/) to run your integration tests. Here is an example of [helm test file](/helm/boxes-api/templates/tests/test-integration.yaml). 
+The advantage of this approach is tha you can run test by executing `helm test` command. 
+
+Try this example in Kubernetes by running:
+```
+helm install int-example  boxes-api 
+helm test int-example
+```
+
+
+
+## Results 
+The test results are reported in a log of a container.  
+However, if you want to aggregate test results and keep the history of execution then you make consider using [testhub](https://github.com/testhub-io/testhub) for that. 

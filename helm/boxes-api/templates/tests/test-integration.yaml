@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "boxes-api.fullname" . }}-test-connection"
+  labels:
+    {{- include "boxes-api.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:    
+    - name: integration
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}-test"
+      env:
+      - name: SERVICEHOST
+        value: "http://{{ include "boxes-api.fullname" . }}:{{ .Values.service.port }}"
+  restartPolicy: Never
