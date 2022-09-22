@@ -17,7 +17,7 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-ukama
+          key: ${{ runner.os }}-go-api-integration-test
           restore-keys: |
             ${{ runner.os }}-go
 
