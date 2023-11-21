@@ -1,23 +1,23 @@
-# Rest API integration test example
+# Rest API service tests example
 
 ## Objective
 
-Integration tests are automated tests executed against an instance of running service, usually after deployment, to ensure that the service works properly with other parts of the system. For example, if a service uses DB then we want to test its interface and ensure that the data from DB is returned.  
+Service tests are automated tests executed against an instance of running service, usually after deployment, to ensure that the service works properly with other parts of the system. For example, if a service uses DB then we want to test its interface and ensure that the data from DB is returned.  
 
 In [testing pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) they are located between unit-test and end-to-end tests. The main target of those tests is service API so it's fairly easy to write them which makes them a crucial part of software quality assurance
 
 ## Scope 
 
-This repository demonstrates one of the approaches to write, run and maintain integration tests for a Golang service. 
+This repository demonstrates one of the approaches to write, run and maintain Service tests for a Golang service. 
 
 ## What is in the repository?
 
 In this repo you will find: 
 - simple [Rest API server](/pkg/router/router.go)
-- [integration test](/test/integration/rest_service_test.go) for the API
-- [Docker file for integration test build](Int.Dockerfile)
-- Script to build [integration test image](/Makefile)
-- [Github Action pipeline](/.github/workflows/build.yaml) to build and push integration test image 
+- [service test](/test/integration/rest_service_test.go) for the API
+- [Docker file for service test build](Int.Dockerfile)
+- Script to build [service test image](/Makefile)
+- [Github Action pipeline](/.github/workflows/build.yaml) to build and push service test image 
 
 ## Let's break it down
 We have our basic api service declared in [router.go](/pkg/router/router.go) file with three methods:
@@ -30,12 +30,12 @@ We have a [test](/test/integration/rest_service_test.go) that checks that our se
 
 
 ## Building Test Image 
-Running locally is good for one time verification. In order to run test as part of CI/CD pipeline we need to build and push integration test image. To do that we will build a test binary first 
+Running locally is good for one time verification. In order to run test as part of CI/CD pipeline we need to build and push service test image. To do that we will build a test binary first 
 ```
 env CGO_ENABLED=0 GOOS=linux GARCH=amd64 go test ./test/integration -tags integration -v -a -c -o bin/integration
 ```
 
-then we will build a docker image using [Int.Dockerfile](Int.Dockerfile) created specifically for integration tests. 
+then we will build a docker image using [Int.Dockerfile](Int.Dockerfile) created specifically for service tests. 
 
 ```
 docker build -f Int.Dockerfile -t integration-test .
@@ -48,7 +48,7 @@ We build application image with two tags `[short-commit-sha]` and `[branch-name]
 ## Runnig Tests
 
 ### Locally
-Our integration test have a `integration` build tag that prevets our test from running with `go test ./...` command. 
+Our service test have a `integration` build tag that prevets our test from running with `go test ./...` command. 
 
 To run our test locally: 
 ```
@@ -62,7 +62,7 @@ Test are packaged into a docker image so we can run them in a container. This do
 
 ### Helm Chart 
 
-If you use helm charts to deploy you application then you can use [helm test](https://helm.sh/docs/topics/chart_tests/) to run your integration tests. Here is an example of [helm test file](/helm/boxes-api/templates/tests/test-integration.yaml). 
+If you use helm charts to deploy you application then you can use [helm test](https://helm.sh/docs/topics/chart_tests/) to run your service tests. Here is an example of [helm test file](/helm/boxes-api/templates/tests/test-integration.yaml). 
 The advantage of this approach is tha you can run test by executing `helm test` command. 
 
 Try this example in Kubernetes by running:
