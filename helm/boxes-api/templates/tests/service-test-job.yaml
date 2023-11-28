@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: "{{ include "boxes-api.fullname" . }}-service-test"
+  labels:
+    {{- include "boxes-api.labels" . | nindent 4 }}
+spec:
+  schedule: "0 9 * * *" # every day at 9am
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: service
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}-test"
+              env:
+                - name: SERVICEHOST
+                  value: "http://{{ include "boxes-api.fullname" . }}:{{ .Values.service.port }}"
+          restartPolicy: Never
