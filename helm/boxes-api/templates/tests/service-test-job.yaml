@@ -1,13 +1,11 @@
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: "{{ include "boxes-api.fullname" . }}-test-integration"
+  name: "{{ include "boxes-api.fullname" . }}-service-test"
   labels:
     {{- include "boxes-api.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": test
 spec:
-  schedule: "0 0 * * *"
+  schedule: "0 9 * * *" # every day at 9am
   jobTemplate:
     spec:
       template:
