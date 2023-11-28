@@ -1,5 +1,5 @@
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1beta1
+kind: CronJob
 metadata:
   name: "{{ include "boxes-api.fullname" . }}-test-integration"
   labels:
@@ -7,10 +7,15 @@ metadata:
   annotations:
     "helm.sh/hook": test
 spec:
-  containers:    
-    - name: service
-      image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}-test"
-      env:
-      - name: SERVICEHOST
-        value: "http://{{ include "boxes-api.fullname" . }}:{{ .Values.service.port }}"
-  restartPolicy: Never
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: service
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}-test"
+              env:
+                - name: SERVICEHOST
+                  value: "http://{{ include "boxes-api.fullname" . }}:{{ .Values.service.port }}"
+          restartPolicy: Never
