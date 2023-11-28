@@ -65,6 +65,7 @@ jobs:
             -t $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }}-test \
             -t $REGISTRY\:latest-test .  && \
           buildah push $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }}-test && \
+          buildah push $REGISTRY\:${{ steps.vars_step.outputs.sha-short }}  && \
           buildah push $REGISTRY\:latest-test 
           
 

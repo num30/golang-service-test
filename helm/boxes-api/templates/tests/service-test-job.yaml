@@ -3,6 +3,7 @@ kind: CronJob
 metadata:
   name: "{{ include "boxes-api.fullname" . }}-service-test"
   labels:
+    testing: service-tests 
     {{- include "boxes-api.labels" . | nindent 4 }}
 spec:
   schedule: "0 9 * * *" # every day at 9am
