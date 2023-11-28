@@ -46,7 +46,7 @@ jobs:
       - name: OCI build and push
         shell: bash
         env:
-          REGISTRY: testhubio/api-service-test
+          REGISTRY: orsol/api-service-test
         run: |
           buildah bud --pull -t $REGISTRY\:${{ steps.vars_step.outputs.sha-short }} \
             -t $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }} \
@@ -58,9 +58,8 @@ jobs:
 
       - name: OCI Push service Tests
         shell: bash
-        working-directory: ${{ inputs.working-directory }}
         env:
-          REGISTRY: testhubio/api-service-test
+          REGISTRY: orsol/api-service-test
         run: |
           buildah bud --pull -f Test.Dockerfile -t $REGISTRY\:${{ steps.vars_step.outputs.sha-short }}-test \
             -t $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }}-test \
