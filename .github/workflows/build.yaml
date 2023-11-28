@@ -17,7 +17,7 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-api-integration-test
+          key: ${{ runner.os }}-go-api-service-test
           restore-keys: |
             ${{ runner.os }}-go
 
@@ -46,7 +46,7 @@ jobs:
       - name: OCI build and push
         shell: bash
         env:
-          REGISTRY: testhubio/api-integration-test
+          REGISTRY: testhubio/api-service-test
         run: |
           buildah bud --pull -t $REGISTRY\:${{ steps.vars_step.outputs.sha-short }} \
             -t $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }} \
@@ -56,11 +56,11 @@ jobs:
           buildah push $REGISTRY\:latest   
 
 
-      - name: OCI Push Integration Tests
+      - name: OCI Push service Tests
         shell: bash
         working-directory: ${{ inputs.working-directory }}
         env:
-          REGISTRY: testhubio/api-integration-test
+          REGISTRY: testhubio/api-service-test
         run: |
           buildah bud --pull -f Test.Dockerfile -t $REGISTRY\:${{ steps.vars_step.outputs.sha-short }}-test \
             -t $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }}-test \

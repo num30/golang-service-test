@@ -1,9 +1,10 @@
 package main
 
 import (
-	"api-integration-test/pkg/router"
 	"log"
 	"net/http"
+
+	"github.com/num30/golang-service-test/pkg/router"
 )
 
 func main() {

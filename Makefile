@@ -1,6 +1,6 @@
-.PHONY: integration.test test build lint deps 
+.PHONY: servicetest.test test build lint deps 
 
-build: integration.build	
+build: servicetest.build	
 	env CGO_ENABLED=0 GOOS=linux GARCH=amd64 go build -a -o bin/api-service cmd/main.go
 
 test:
@@ -17,7 +17,7 @@ clean:
 	rm pb/gen/*.go
 
 
-# integration tests
+# service tests
 
 # service tests
 servicetest.run:

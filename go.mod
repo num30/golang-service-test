@@ -1,4 +1,4 @@
-module api-integration-test
+module github.com/num30/golang-service-test
 
 go 1.19
 

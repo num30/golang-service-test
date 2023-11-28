@@ -35,10 +35,10 @@ Running locally is good for one time verification. In order to run test as part 
 env CGO_ENABLED=0 go test ./test/stest -tags servicetest -v -c -o bin/service-test
 ```
 
-then we will build a docker image using [Test.Dockerfile](Test.Dockerfile) created specifically for integration tests. 
+then we will build a docker image using [Test.Dockerfile](Test.Dockerfile) created specifically for service tests. 
 
 ```
-docker build -f Test.Dockerfile -t integration-test .
+docker build -f Test.Dockerfile -t service-test .
 ```
 
 You probably want to do it in a pipeline so [here is an example of Github Action pipeline](.github/workflows/build.yaml) that does that for you.
@@ -48,11 +48,11 @@ We build application image with two tags `[short-commit-sha]` and `[branch-name]
 ## Runnig Tests
 
 ### Locally
-Our service test have a `integration` build tag that prevets our test from running with `go test ./...` command. 
+Our service test have a `servicetest` build tag that prevents our test from running with `go test ./...` command. 
 
 To run our test locally: 
 ```
-go test ./test/integration -tags integration  -v -count=1
+go test ./test/stest -tags servicetest  -v -count=1
 ```
 
 ### Docker
@@ -62,14 +62,14 @@ Test are packaged into a docker image so we can run them in a container. This do
 
 ### Helm Chart 
 
-If you use helm charts to deploy you application then you can use [helm test](https://helm.sh/docs/topics/chart_tests/) to run your service tests. Here is an example of [helm test file](/helm/boxes-api/templates/tests/test-integration.yaml). 
+If you use helm charts to deploy you application then you can use [helm test](https://helm.sh/docs/topics/chart_tests/) to run your service tests. Here is an example of [helm test file](/helm/boxes-api/templates/tests/test-service.yaml). 
 The advantage of this approach is tha you can run test by executing `helm test` command. 
 
 Try this example in Kubernetes by running:
 ```
 helm install int-example  boxes-api 
 helm test int-example
-kubectl logs int-example-boxes-api-test-integration
+kubectl logs int-example-boxes-api-test-service
 ```
 
 ## Results 

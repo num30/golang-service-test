@@ -4,13 +4,14 @@
 package integration
 
 import (
-	"api-integration-test/pkg/router"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/num30/golang-service-test/pkg/router"
 
 	"github.com/go-resty/resty/v2"
 
