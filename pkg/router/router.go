@@ -2,10 +2,11 @@ package router
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type Box struct {

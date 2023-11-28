@@ -1,17 +1,18 @@
-//go:build integration
-// +build integration
+//go:build servicetest
+// +build servicetest
 
 package integration
 
 import (
 	"api-integration-test/pkg/router"
 	"fmt"
-	"github.com/go-resty/resty/v2"
 	"log"
 	"net/http"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/go-resty/resty/v2"
 
 	"github.com/stretchr/testify/assert"
 )

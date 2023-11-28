@@ -19,12 +19,10 @@ clean:
 
 # integration tests
 
-integration.test:
-	go test ./test/integration -tags integration  -v -count=1
+# service tests
+servicetest.run:
+	go test ./test/stest -tags servicetest  -v -count=1
 
 
-integration.build:
-	env CGO_ENABLED=0 GOOS=linux GARCH=amd64 go test ./test/integration -tags integration -v -a -c -o bin/integration
-
-integration.docker: integration.build
-	docker build .
+servicetest.build:
+	env CGO_ENABLED=0 go test ./test/stest -tags servicetest -v -c -o bin/service-test

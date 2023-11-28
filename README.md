@@ -1,4 +1,4 @@
-# Rest API service tests example
+# API Service Test Example
 
 ## Objective
 
@@ -8,14 +8,14 @@ In [testing pyramid](https://martinfowler.com/articles/practical-test-pyramid.ht
 
 ## Scope 
 
-This repository demonstrates one of the approaches to write, run and maintain Service tests for a Golang service. 
+This repository demonstrates one of the approaches to write, run and maintain service tests for a Golang service. 
 
 ## What is in the repository?
 
 In this repo you will find: 
 - simple [Rest API server](/pkg/router/router.go)
-- [service test](/test/integration/rest_service_test.go) for the API
-- [Docker file for service test build](Int.Dockerfile)
+- [service test](/test/stest/rest_service_test.go) for the API
+- [Docker file for service test build](Test.Dockerfile)
 - Script to build [service test image](/Makefile)
 - [Github Action pipeline](/.github/workflows/build.yaml) to build and push service test image 
 
@@ -25,20 +25,20 @@ We have our basic api service declared in [router.go](/pkg/router/router.go) fil
  - `GET /boxes/{box_id}` - returns Json with box content by it's ID
  - `PUT /boxes/{box_id}` - updates box content by it's ID
 
-We have a [test](/test/integration/rest_service_test.go) that checks that our service works as expected. Test is written as a go tests the only difference is that we don't access any methods directly but use HTTP calls to call our service.  
+We have a [test](/test/stest/rest_service_test.go) that checks that our service works as expected. Test is written as a go tests the only difference is that we don't access any methods directly but use HTTP calls to call our service.  
 
 
 
 ## Building Test Image 
 Running locally is good for one time verification. In order to run test as part of CI/CD pipeline we need to build and push service test image. To do that we will build a test binary first 
 ```
-env CGO_ENABLED=0 GOOS=linux GARCH=amd64 go test ./test/integration -tags integration -v -a -c -o bin/integration
+env CGO_ENABLED=0 go test ./test/stest -tags servicetest -v -c -o bin/service-test
 ```
 
-then we will build a docker image using [Int.Dockerfile](Int.Dockerfile) created specifically for service tests. 
+then we will build a docker image using [Test.Dockerfile](Test.Dockerfile) created specifically for integration tests. 
 
 ```
-docker build -f Int.Dockerfile -t integration-test .
+docker build -f Test.Dockerfile -t integration-test .
 ```
 
 You probably want to do it in a pipeline so [here is an example of Github Action pipeline](.github/workflows/build.yaml) that does that for you.
