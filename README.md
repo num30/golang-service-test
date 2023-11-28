@@ -62,16 +62,8 @@ Test are packaged into a docker image so we can run them in a container. This do
 
 ### Helm Chart 
 
-If you use helm charts to deploy you application then you can use [helm test](https://helm.sh/docs/topics/chart_tests/) to run your service tests. Here is an example of [helm test file](/helm/boxes-api/templates/tests/test-service.yaml). 
-The advantage of this approach is tha you can run test by executing `helm test` command. 
+If you deploy your service to Kubernetes then deploying service test as a cron job will be a good idea. You can trigger them CD pipeline or manually. This repo contains and exemplar helm chart that deploys [service](helm/boxes-api/templates/deployment.yaml) and [service test](helm/boxes-api/templates/tests/service-test-job.yaml) to Kubernetes.
 
-Try this example in Kubernetes by running:
-```
-helm install int-example  boxes-api 
-helm test int-example
-kubectl logs int-example-boxes-api-test-service
-```
 
-## Results 
-The test results are reported in a log of a container.  
-However, if you want to aggregate test results and keep the history of execution then you make consider using [testhub](https://github.com/testhub-io/testhub) for that. 
+## Tests Results 
+If you run test as a container then it will finish executions with `FAILED` status in case when any of test cases failed. Otherwise it will finish without any errors.
