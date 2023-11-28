@@ -38,7 +38,6 @@ func TestPingEndpoint(t *testing.T) {
 	})
 }
 
-// Call webhost endpoint and check response
 func Test_BoxesEndpoint(t *testing.T) {
 	// make sure that test data is distinguishable from prod data and unique for test run
 	testBoxId := fmt.Sprintf("test_box_id_%d", time.Now().Unix())
